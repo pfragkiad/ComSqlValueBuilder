@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComSqlValueBuilder", "ComSqlValueBuilder\ComSqlValueBuilder.csproj", "{F6B93D53-FDE9-4967-A718-3C65CC67C0CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComSqlClient", "ComSqlClient\ComSqlClient.csproj", "{8246BB6B-C6A4-485F-8BE4-9EA4D67B80DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6B93D53-FDE9-4967-A718-3C65CC67C0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B93D53-FDE9-4967-A718-3C65CC67C0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B93D53-FDE9-4967-A718-3C65CC67C0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B93D53-FDE9-4967-A718-3C65CC67C0CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8246BB6B-C6A4-485F-8BE4-9EA4D67B80DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8246BB6B-C6A4-485F-8BE4-9EA4D67B80DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8246BB6B-C6A4-485F-8BE4-9EA4D67B80DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8246BB6B-C6A4-485F-8BE4-9EA4D67B80DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {479BF370-4EBE-4B15-AB40-547D550D4D98}
+	EndGlobalSection
+EndGlobal
