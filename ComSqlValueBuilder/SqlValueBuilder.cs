@@ -32,9 +32,9 @@ namespace ComSqlValueBuilder
 
         public string UpdateSqlColumn { get; set; }
 
-        public long FromRow { get; set; }
+        public int FromRow { get; set; }
 
-        public long ToRow { get; set; }
+        public int ToRow { get; set; }
 
         public void AddString(string key, string column = "")
         {
@@ -72,8 +72,15 @@ namespace ComSqlValueBuilder
             _fieldTypes[key] = (int)VarType.Boolean;
         }
 
-        public void LoadFromSchema(Range labelCell, long firstDataRow, long lastDataRow = -1)
+        /// <summary>
+        /// Loads the schema from the table starting from the labelCell.
+        /// </summary>
+        /// <param name="labelCell"></param>
+        /// <param name="firstDataRow">If omitted, the value is implied by the next data row after the ID header row.</param>
+        /// <param name="lastDataRow">If omitted, the value is the last non empty row starting from the firstDataRow.</param>
+        public void LoadFromSchema(Range labelCell, int firstDataRow=-1, int lastDataRow = -1)
         {
+
 
             string sheetName = labelCell.Offset[1, 1].Value;
             _sh = labelCell.Worksheet.Parent.Sheets[sheetName] as Worksheet;
@@ -84,12 +91,12 @@ namespace ComSqlValueBuilder
             UpdateSqlColumn = labelCell.Offset[5, 1].Text;
 
             Range fieldsCell = labelCell.Offset[7, 1];
-            long firstFieldRow = fieldsCell.Row + 1;
-            long lastFieldRow = fieldsCell.End[XlDirection.xlDown].Row;
+            int firstFieldRow = fieldsCell.Row + 1;
+            int lastFieldRow = fieldsCell.End[XlDirection.xlDown].Row;
 
             Worksheet shSchema = labelCell.Worksheet;
             int c = labelCell.Column;
-            for (long r = firstFieldRow; r <= lastFieldRow; r++)
+            for (int r = firstFieldRow; r <= lastFieldRow; r++)
             {
                 string key = shSchema.Cells[r, c].Text;
                 string column = shSchema.Cells[r, c + 1].Text;
@@ -113,6 +120,12 @@ namespace ComSqlValueBuilder
                 }
             }
 
+            if(firstDataRow==-1)
+            {
+                Range idColumn = _sh.Columns[_fieldColumns["ID"]];
+                firstDataRow = idColumn.Find("ID").Row + 1;
+            }
+
             FromRow = firstDataRow;
 
             if (lastDataRow == -1)
@@ -124,7 +137,7 @@ namespace ComSqlValueBuilder
             ToRow = lastDataRow;
         }
 
-        public void ReadRow(long row)
+        public void ReadRow(int row)
         {
             _values.Clear();
 
@@ -221,28 +234,28 @@ namespace ComSqlValueBuilder
             return sql.ToString();
         }
 
-        public string GetInsertSql(long row)
+        public string GetInsertSql(int row)
         {
             ReadRow(row);
             return $"INSERT INTO {TableName} {GetInsertPartialString()}";
         }
 
-        public string GetUpdateSql(long row)
+        public string GetUpdateSql(int row)
         {
             ReadRow(row);
-            long id = Convert.ToInt64(GetValue("ID"));
+            int id = Convert.ToInt32(GetValue("ID"));
             return $"UPDATE {TableName} SET {GetUpdatePartialString()} WHERE ID = {id}";
         }
 
-        public void SetInsertSqls(long fromRow, long toRow, string insertSqlColumn)
+        public void SetInsertSqls(int fromRow, int toRow, string insertSqlColumn)
         {
-            for (long row = fromRow; row <= toRow; row++)
+            for (int row = fromRow; row <= toRow; row++)
                 _sh.Range[insertSqlColumn + row].Value = GetInsertSql(row);
         }
 
-        public void SetUpdateSqls(long fromRow, long toRow, string updateSqlColumn)
+        public void SetUpdateSqls(int fromRow, int toRow, string updateSqlColumn)
         {
-            for (long row = fromRow; row <= toRow; row++)
+            for (int row = fromRow; row <= toRow; row++)
                 _sh.Range[updateSqlColumn + row].Value = GetUpdateSql(row);
         }
 
@@ -255,7 +268,7 @@ namespace ComSqlValueBuilder
                 SetUpdateSqls(FromRow, ToRow, InsertSqlColumn);
         }
 
-        private long GetLastRow(Range firstCell)
+        private int GetLastRow(Range firstCell)
         {
             if (firstCell.Offset[1, 0].Value == null)
                 return firstCell.Row;
