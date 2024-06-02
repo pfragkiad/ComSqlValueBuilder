@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
 
@@ -15,6 +16,8 @@ namespace ComSqlValueBuilder
         string UpdateSqlColumn { get; set; }
         int FromRow { get; set; }
         int ToRow { get; set; }
+
+        
 
         void AddString(string key, string column = "");
         void AddDouble(string key, string column = "");

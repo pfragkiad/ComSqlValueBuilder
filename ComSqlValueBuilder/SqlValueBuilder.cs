@@ -7,7 +7,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace ComSqlValueBuilder
 {
-
+    
     [Guid("6A629DC8-E8B3-4D4F-93DE-4A4B5AD0F416")]
     [ClassInterface(ClassInterfaceType.None)]
     [ComVisible(true)]
@@ -15,7 +15,7 @@ namespace ComSqlValueBuilder
     {
         private Worksheet _sh;
         private readonly Dictionary<string, string> _fieldColumns = new Dictionary<string, string>();
-        private readonly Dictionary<string, int> _fieldTypes = new Dictionary<string, int>();
+        private readonly Dictionary<string, VarType> _fieldTypes = new Dictionary<string, VarType>();
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
 
         public Worksheet Worksheet
@@ -39,13 +39,13 @@ namespace ComSqlValueBuilder
         public void AddString(string key, string column = "")
         {
             _fieldColumns[key] = column;
-            _fieldTypes[key] = (int)VarType.String;
+            _fieldTypes[key] = VarType.String;
         }
 
         public void AddDouble(string key, string column = "")
         {
             _fieldColumns[key] = column;
-            _fieldTypes[key] = (int)VarType.Double;
+            _fieldTypes[key] = VarType.Double;
         }
 
         public void SetDoubleValue(string key, object value)
@@ -63,13 +63,13 @@ namespace ComSqlValueBuilder
         public void AddLong(string key, string column = "")
         {
             _fieldColumns[key] = column;
-            _fieldTypes[key] = (int)VarType.Long;
+            _fieldTypes[key] = VarType.Long;
         }
 
         public void AddBoolean(string key, string column = "")
         {
             _fieldColumns[key] = column;
-            _fieldTypes[key] = (int)VarType.Boolean;
+            _fieldTypes[key] = VarType.Boolean;
         }
 
         /// <summary>
@@ -150,25 +150,15 @@ namespace ComSqlValueBuilder
                 object value = cell.Value;
 
                 if (value == null || value.ToString() == NullEquivalent || value.ToString() == "NULL")
-                {
                     _values[key] = "NULL";
-                }
-                else if (_fieldTypes[key] == (int)VarType.String)
-                {
+                else if (_fieldTypes[key] == VarType.String)
                     _values[key] = value.ToString();
-                }
-                else if (_fieldTypes[key] == (int)VarType.Double)
-                {
+                else if (_fieldTypes[key] == VarType.Double)
                     _values[key] = Convert.ToDouble(value);
-                }
-                else if (_fieldTypes[key] == (int)VarType.Long)
-                {
-                    _values[key] = Convert.ToInt64(value);
-                }
-                else if (_fieldTypes[key] == (int)VarType.Boolean)
-                {
+                else if (_fieldTypes[key] == VarType.Long)
+                    _values[key] = Convert.ToInt32(value);
+                else if (_fieldTypes[key] == VarType.Boolean)
                     _values[key] = Convert.ToBoolean(value);
-                }
             }
         }
 
